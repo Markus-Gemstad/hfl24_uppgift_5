@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
-import 'package:parkmycar_shared/models/parking_space.dart';
 import '../util/validators.dart';
 import 'identifiable.dart';
+import 'parking_space.dart';
 import 'serializer.dart';
 
 class Parking extends Identifiable {

@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 import 'package:parkmycar_admin/blocs/parking_spaces_bloc.dart';
 import 'package:parkmycar_admin/globals.dart';
@@ -32,7 +31,7 @@ void main() {
       blocTest<ParkingSpacesBloc, ParkingSpacesState>(
         'load',
         setUp: () {
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenAnswer((_) async => [parkingSpace]);
         },
         build: () => ParkingSpacesBloc(repository: mockRepo),
@@ -43,14 +42,14 @@ void main() {
           ParkingSpacesLoaded(parkingSpaces: [parkingSpace]),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
       );
 
       blocTest<ParkingSpacesBloc, ParkingSpacesState>(
         'error',
         setUp: () {
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenThrow(Exception('Failed to load parkingSpaces'));
         },
         build: () => ParkingSpacesBloc(repository: mockRepo),
@@ -62,7 +61,7 @@ void main() {
               message: 'Exception: Failed to load parkingSpaces'),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
       );
     });
@@ -74,7 +73,7 @@ void main() {
       blocTest<ParkingSpacesBloc, ParkingSpacesState>(
         'reload',
         setUp: () {
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenAnswer((_) async => [parkingSpace]);
         },
         build: () => ParkingSpacesBloc(repository: mockRepo),
@@ -85,7 +84,7 @@ void main() {
           ParkingSpacesLoaded(parkingSpaces: [parkingSpace]),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
       );
@@ -93,7 +92,7 @@ void main() {
       blocTest<ParkingSpacesBloc, ParkingSpacesState>(
         'error',
         setUp: () {
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenThrow(Exception('Failed to load parkingSpaces'));
         },
         build: () => ParkingSpacesBloc(repository: mockRepo),
@@ -105,7 +104,7 @@ void main() {
               message: 'Exception: Failed to load parkingSpaces'),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
       );
     });
@@ -118,7 +117,7 @@ void main() {
       blocTest<ParkingSpacesBloc, ParkingSpacesState>(
         'search',
         setUp: () {
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenAnswer((_) async => [parkingSpace]);
         },
         build: () => ParkingSpacesBloc(repository: mockRepo),
@@ -129,14 +128,14 @@ void main() {
           ParkingSpacesLoaded(parkingSpaces: [parkingSpace]),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
       );
 
       blocTest<ParkingSpacesBloc, ParkingSpacesState>(
         'error',
         setUp: () {
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenThrow(Exception('Failed to search parkingSpaces'));
         },
         build: () => ParkingSpacesBloc(repository: mockRepo),
@@ -148,7 +147,7 @@ void main() {
               message: 'Exception: Failed to search parkingSpaces'),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
       );
     });
@@ -162,7 +161,7 @@ void main() {
         setUp: () {
           when(() => mockRepo.create(any()))
               .thenAnswer((_) async => parkingSpace);
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenAnswer((_) async => [parkingSpace]);
         },
         build: () => ParkingSpacesBloc(repository: mockRepo),
@@ -175,7 +174,7 @@ void main() {
         ],
         verify: (bloc) {
           verify(() => mockRepo.create(parkingSpace)).called(1);
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
       );
@@ -211,7 +210,7 @@ void main() {
         setUp: () {
           when(() => mockRepo.update(any()))
               .thenAnswer((_) async => parkingSpace);
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenAnswer((_) async => [parkingSpace]);
         },
         build: () => ParkingSpacesBloc(repository: mockRepo),
@@ -224,7 +223,7 @@ void main() {
         ],
         verify: (bloc) {
           verify(() => mockRepo.update(parkingSpace)).called(1);
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
       );
@@ -259,7 +258,7 @@ void main() {
         'delete item test',
         setUp: () {
           when(() => mockRepo.delete(any())).thenAnswer((_) async => true);
-          when(() => mockRepo.getAll(any())).thenAnswer((_) async => []);
+          when(() => mockRepo.getAll(any(), any())).thenAnswer((_) async => []);
         },
         build: () => ParkingSpacesBloc(repository: mockRepo),
         seed: () => ParkingSpacesLoaded(parkingSpaces: [parkingSpace]),
@@ -270,8 +269,8 @@ void main() {
           ParkingSpacesLoaded(parkingSpaces: [], pending: null),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.delete(parkingSpace.id!)).called(1);
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.delete(parkingSpace.id)).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
       );
@@ -292,7 +291,7 @@ void main() {
               message: 'Exception: Failed to delete parkingSpace'),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.delete(parkingSpace.id!)).called(1);
+          verify(() => mockRepo.delete(parkingSpace.id)).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
       );

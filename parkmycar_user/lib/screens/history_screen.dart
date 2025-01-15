@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parkmycar_client_shared/blocs/auth_bloc.dart';
+import 'package:parkmycar_shared/parkmycar_shared.dart';
 import 'package:parkmycar_user/blocs/parkings_bloc.dart';
 
 import '../globals.dart';
@@ -12,7 +12,7 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        String personId = context.read<AuthBloc>().state.user!.id!;
+        String personId = context.read<AuthBloc>().state.user!.id;
         context.read<ParkingsBloc>().add(ReloadParkings(personId: personId));
         await context
             .read<ParkingsBloc>()
@@ -35,7 +35,7 @@ class HistoryScreen extends StatelessWidget {
                           ElevatedButton(
                               onPressed: () {
                                 String personId =
-                                    context.read<AuthBloc>().state.user!.id!;
+                                    context.read<AuthBloc>().state.user!.id;
                                 context
                                     .read<ParkingsBloc>()
                                     .add(LoadParkings(personId: personId));

@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 import 'package:parkmycar_user/blocs/parkings_bloc.dart';
 import 'package:parkmycar_user/globals.dart';
@@ -45,7 +44,8 @@ void main() {
       blocTest<ParkingsBloc, ParkingsState>(
         'load',
         setUp: () {
-          when(() => mockRepo.getAll(any())).thenAnswer((_) async => [parking]);
+          when(() => mockRepo.getAll(any(), any()))
+              .thenAnswer((_) async => [parking]);
           when(() => mockSpaceRepo.getById(any()))
               .thenAnswer((_) async => parkingSpace);
         },
@@ -58,7 +58,7 @@ void main() {
           ParkingsLoaded(parkings: [parking]),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
           verify(() => mockSpaceRepo.getById(any())).called(1);
         },
       );
@@ -66,7 +66,7 @@ void main() {
       blocTest<ParkingsBloc, ParkingsState>(
         'error',
         setUp: () {
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenThrow(Exception('Failed to load parkings'));
         },
         build: () =>
@@ -78,7 +78,7 @@ void main() {
           ParkingsError(message: 'Exception: Failed to load parkings'),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
       );
     });
@@ -98,7 +98,8 @@ void main() {
       blocTest<ParkingsBloc, ParkingsState>(
         'reload',
         setUp: () {
-          when(() => mockRepo.getAll(any())).thenAnswer((_) async => [parking]);
+          when(() => mockRepo.getAll(any(), any()))
+              .thenAnswer((_) async => [parking]);
           when(() => mockSpaceRepo.getById(any()))
               .thenAnswer((_) async => parkingSpace);
         },
@@ -111,7 +112,7 @@ void main() {
           ParkingsLoaded(parkings: [parking]),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
           verify(() => mockSpaceRepo.getById(any())).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
@@ -120,7 +121,7 @@ void main() {
       blocTest<ParkingsBloc, ParkingsState>(
         'error',
         setUp: () {
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenThrow(Exception('Failed to load parkings'));
         },
         build: () =>
@@ -132,7 +133,7 @@ void main() {
           ParkingsError(message: 'Exception: Failed to load parkings'),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
       );
     });

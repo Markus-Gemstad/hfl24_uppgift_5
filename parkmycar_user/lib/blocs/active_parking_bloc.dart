@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 
 part 'active_parking_state.dart';

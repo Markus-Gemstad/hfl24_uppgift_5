@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 // import 'package:stream_transform/stream_transform.dart';
 
@@ -66,8 +65,7 @@ class ParkingSpacesBloc extends Bloc<ParkingSpacesEvent, ParkingSpacesState> {
   }
 
   Future<List<ParkingSpace>> _loadParkingSpaces([String? query]) async {
-    var parkingSpaces = await repository.getAll((a, b) =>
-        a.streetAddress.toLowerCase().compareTo(b.streetAddress.toLowerCase()));
+    var parkingSpaces = await repository.getAll('streetAddress');
 
     if (query != null && query.isNotEmpty) {
       parkingSpaces = parkingSpaces

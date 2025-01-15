@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:parkmycar_client_shared/blocs/auth_bloc.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 import 'package:provider/provider.dart';
 
@@ -46,11 +45,11 @@ class _VehicleEditDialogState extends State<VehicleEditDialog> {
       Person? currentPerson = authState.user;
 
       if (isEditMode) {
-        _vehicle = Vehicle(_regNr!, currentPerson!.id!,
+        _vehicle = Vehicle(_regNr!, currentPerson!.id,
             _vehicleType as VehicleType, _vehicle!.id);
       } else {
         _vehicle =
-            Vehicle(_regNr!, currentPerson!.id!, _vehicleType as VehicleType);
+            Vehicle(_regNr!, currentPerson!.id, _vehicleType as VehicleType);
       }
       Navigator.pop(context, _vehicle);
     }

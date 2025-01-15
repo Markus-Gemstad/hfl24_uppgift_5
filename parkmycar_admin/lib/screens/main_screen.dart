@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parkmycar_client_shared/parkmycar_client_stuff.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
+import 'package:parkmycar_shared/parkmycar_shared.dart';
 
 import '../blocs/parking_spaces_bloc.dart';
 import 'parking_space_screen.dart';

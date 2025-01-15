@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 import 'package:parkmycar_user/globals.dart';
 
@@ -46,8 +45,7 @@ class ParkingsBloc extends Bloc<ParkingsEvent, ParkingsState> {
   }
 
   Future<List<Parking>> _loadParkings(String personId) async {
-    var parkings =
-        await repository.getAll((a, b) => b.startTime.compareTo(a.startTime));
+    var parkings = await repository.getAll('startTime', true);
 
     // TODO Ersätt med bättre relationer mellan Parking och Person
     parkings = parkings

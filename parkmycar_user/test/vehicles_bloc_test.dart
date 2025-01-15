@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 import 'package:parkmycar_user/blocs/vehicles_bloc.dart';
 import 'package:parkmycar_user/globals.dart';
@@ -31,7 +30,8 @@ void main() {
         'create',
         setUp: () {
           when(() => mockRepo.create(any())).thenAnswer((_) async => vehicle);
-          when(() => mockRepo.getAll(any())).thenAnswer((_) async => [vehicle]);
+          when(() => mockRepo.getAll(any(), any()))
+              .thenAnswer((_) async => [vehicle]);
         },
         build: () => VehiclesBloc(repository: mockRepo),
         seed: () => VehiclesLoaded(vehicles: []),
@@ -42,7 +42,7 @@ void main() {
         ],
         verify: (bloc) {
           verify(() => mockRepo.create(vehicle)).called(1);
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
       );
@@ -74,7 +74,8 @@ void main() {
         'update',
         setUp: () {
           when(() => mockRepo.update(any())).thenAnswer((_) async => vehicle);
-          when(() => mockRepo.getAll(any())).thenAnswer((_) async => [vehicle]);
+          when(() => mockRepo.getAll(any(), any()))
+              .thenAnswer((_) async => [vehicle]);
         },
         build: () => VehiclesBloc(repository: mockRepo),
         seed: () => VehiclesLoaded(vehicles: [vehicle]),
@@ -85,7 +86,7 @@ void main() {
         ],
         verify: (bloc) {
           verify(() => mockRepo.update(vehicle)).called(1);
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
       );
@@ -117,7 +118,7 @@ void main() {
         'delete item test',
         setUp: () {
           when(() => mockRepo.delete(any())).thenAnswer((_) async => true);
-          when(() => mockRepo.getAll(any())).thenAnswer((_) async => []);
+          when(() => mockRepo.getAll(any(), any())).thenAnswer((_) async => []);
         },
         build: () => VehiclesBloc(repository: mockRepo),
         seed: () => VehiclesLoaded(vehicles: [vehicle]),
@@ -127,8 +128,8 @@ void main() {
           VehiclesLoaded(vehicles: [], pending: null),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.delete(vehicle.id!)).called(1);
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.delete(vehicle.id)).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
       );
@@ -147,7 +148,7 @@ void main() {
           VehiclesError(message: 'Exception: Failed to delete vehicle'),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.delete(vehicle.id!)).called(1);
+          verify(() => mockRepo.delete(vehicle.id)).called(1);
         },
         wait: Duration(milliseconds: delayLoadInMilliseconds),
       );
@@ -159,7 +160,8 @@ void main() {
       blocTest<VehiclesBloc, VehiclesState>(
         'load items test',
         setUp: () {
-          when(() => mockRepo.getAll(any())).thenAnswer((_) async => [vehicle]);
+          when(() => mockRepo.getAll(any(), any()))
+              .thenAnswer((_) async => [vehicle]);
         },
         build: () => VehiclesBloc(repository: mockRepo),
         seed: () => VehiclesLoaded(vehicles: []),
@@ -169,14 +171,14 @@ void main() {
           VehiclesLoaded(vehicles: [vehicle]),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
       );
 
       blocTest<VehiclesBloc, VehiclesState>(
         'error',
         setUp: () {
-          when(() => mockRepo.getAll(any()))
+          when(() => mockRepo.getAll(any(), any()))
               .thenThrow(Exception('Failed to load vehicles'));
         },
         build: () => VehiclesBloc(repository: mockRepo),
@@ -187,7 +189,7 @@ void main() {
           VehiclesError(message: 'Exception: Failed to load vehicles'),
         ],
         verify: (bloc) {
-          verify(() => mockRepo.getAll(any())).called(1);
+          verify(() => mockRepo.getAll(any(), any())).called(1);
         },
       );
     });

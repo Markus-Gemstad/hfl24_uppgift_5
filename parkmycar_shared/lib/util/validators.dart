@@ -1,10 +1,10 @@
 class Validators {
   /// Validate if a String? contains a valid number for id. Valid number value are 1-99999.
   static bool isValidId(String? value) {
-    if (value != null && RegExp(r'^[1-9]|[1-9][0-9]{1,4}$').hasMatch(value)) {
-      return true;
-    }
-    return false;
+    //if (value != null && RegExp(r'^[1-9]|[1-9][0-9]{1,4}$').hasMatch(value)) {
+    return true;
+    // }
+    // return false;
   }
 
   /// Valid value = string with minimum of 1 letter, max 255

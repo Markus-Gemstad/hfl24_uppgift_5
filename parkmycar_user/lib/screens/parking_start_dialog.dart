@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:parkmycar_client_shared/blocs/auth_bloc.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 import 'package:parkmycar_user/globals.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +19,7 @@ class _ParkingStartDialogState extends State<ParkingStartDialog> {
 
   Future<List<Vehicle>> getAllVehicles() async {
     final repo = VehicleFirebaseRepository();
-    var items = await repo.getAll((a, b) => a.regNr.compareTo(b.regNr));
+    var items = await repo.getAll('regNr');
 
     if (context.mounted) {
       // ignore: use_build_context_synchronously
@@ -141,7 +139,7 @@ class _ParkingStartDialogState extends State<ParkingStartDialog> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data!.isNotEmpty) {
-                          _selectedVehicleId = snapshot.data!.first.id!;
+                          _selectedVehicleId = snapshot.data!.first.id;
                           return DropdownMenu(
                             initialSelection: snapshot.data!.first,
                             dropdownMenuEntries: snapshot.data!
@@ -151,7 +149,7 @@ class _ParkingStartDialogState extends State<ParkingStartDialog> {
                                   value: vehicle, label: vehicle.regNr);
                             }).toList(),
                             onSelected: (value) {
-                              _selectedVehicleId = value!.id!;
+                              _selectedVehicleId = value!.id;
                             },
                           );
                         } else {
@@ -179,9 +177,9 @@ class _ParkingStartDialogState extends State<ParkingStartDialog> {
                 child: Text('Starta parkering', style: TextStyle(fontSize: 24)),
                 onPressed: () async {
                   Parking parking = Parking(
-                      currentPerson!.id!,
+                      currentPerson!.id,
                       _selectedVehicleId,
-                      parkingSpace.id!,
+                      parkingSpace.id,
                       DateTime.now(),
                       _selectedEndTime,
                       parkingSpace.pricePerHour);

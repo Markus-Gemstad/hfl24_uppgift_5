@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parkmycar_client_shared/parkmycar_client_stuff.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
-import 'package:parkmycar_user/blocs/vehicles_bloc.dart';
-import 'package:parkmycar_user/screens/vehicle_edit_dialog.dart';
+
+import '../blocs/vehicles_bloc.dart';
+import 'vehicle_edit_dialog.dart';
 
 class VehicleScreen extends StatelessWidget {
   const VehicleScreen({super.key});
@@ -75,7 +75,7 @@ class VehicleScreen extends StatelessWidget {
                                         .read<AuthBloc>()
                                         .state
                                         .user!
-                                        .id!;
+                                        .id;
                                     context.read<VehiclesBloc>().add(
                                         UpdateVehicle(
                                             vehicle: vehicle,
@@ -93,7 +93,7 @@ class VehicleScreen extends StatelessWidget {
                                         .read<AuthBloc>()
                                         .state
                                         .user!
-                                        .id!;
+                                        .id;
                                     context.read<VehiclesBloc>().add(
                                         DeleteVehicle(
                                             vehicle: item, personId: personId));
@@ -125,7 +125,7 @@ class VehicleScreen extends StatelessWidget {
               debugPrint(vehicle.toString());
 
               if (vehicle != null && vehicle.isValid() && context.mounted) {
-                String personId = context.read<AuthBloc>().state.user!.id!;
+                String personId = context.read<AuthBloc>().state.user!.id;
                 context
                     .read<VehiclesBloc>()
                     .add(CreateVehicle(vehicle: vehicle, personId: personId));

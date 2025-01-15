@@ -2,12 +2,6 @@ import '../util/validators.dart';
 import 'identifiable.dart';
 import 'serializer.dart';
 
-void hej() {
-  ParkingSpace parkingSpace = ParkingSpace("Gatan 1", "12345", "Staden", 100);
-  print(parkingSpace.isValid());
-  print(parkingSpace);
-}
-
 class ParkingSpace extends Identifiable {
   String streetAddress;
   String postalCode;

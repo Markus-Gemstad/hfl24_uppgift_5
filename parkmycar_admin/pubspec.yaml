@@ -32,22 +32,21 @@ dependencies:
     sdk: flutter
   parkmycar_shared:
     path: '../parkmycar_shared'
-  parkmycar_client_shared:
-    path: '../parkmycar_client_shared'
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   provider: ^6.1.2
-  intl: ^0.19.0
-  flutter_bloc: ^8.1.6
-  bloc: ^8.1.4
+  intl: ^0.20.1
   equatable: ^2.0.7
   stream_transform: ^2.1.1
-  bloc_test: ^9.1.7
-  mocktail: ^1.0.4
-  hydrated_bloc: ^9.1.5
+  bloc: ^9.0.0
+  hydrated_bloc: ^10.0.0
+  flutter_bloc: ^9.0.0
   path_provider: ^2.1.5
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.4
+  firebase_core: ^3.10.0
 
 dev_dependencies:
   flutter_test:

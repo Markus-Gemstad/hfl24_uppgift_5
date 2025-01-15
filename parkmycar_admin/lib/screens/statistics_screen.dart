@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 
 import '../globals.dart';
@@ -19,8 +18,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   Future<List<Parking>> getOngoingParkings() async {
     // Get all sorted by latest first
-    var items = await ParkingFirebaseRepository()
-        .getAll((a, b) => b.startTime.compareTo(a.startTime));
+    var items = await ParkingFirebaseRepository().getAll('startTime');
 
     // Filtrera på nu pågående parkeringar
     // TODO Kunna hämta lista fördigfilrerad från databasen

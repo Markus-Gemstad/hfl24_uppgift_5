@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 import 'package:parkmycar_user/globals.dart';
 
@@ -37,8 +36,7 @@ class VehiclesBloc extends Bloc<VehiclesEvent, VehiclesState> {
   }
 
   Future<List<Vehicle>> _loadVehicles(String personId) async {
-    var vehicles =
-        await repository.getAll((a, b) => a.regNr.compareTo(b.regNr));
+    var vehicles = await repository.getAll('regNr');
 
     // TODO Ersätt med bättre relationer mellan Vehicle och Person
     vehicles =
@@ -109,7 +107,7 @@ class VehiclesBloc extends Bloc<VehiclesEvent, VehiclesState> {
 
     try {
       // Faktiskt API-anrop
-      await repository.delete(vehicle.id!);
+      await repository.delete(vehicle.id);
 
       // Ladda om för att säkerställa konsistens
       var vehicles = await _loadVehicles(personId);

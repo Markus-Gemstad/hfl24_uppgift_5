@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parkmycar_client_shared/parkmycar_client_stuff.dart';
-import 'package:parkmycar_client_shared/parkmycar_firebase_repo.dart';
+import 'package:parkmycar_shared/parkmycar_shared.dart';
 
 import '../blocs/active_parking_bloc.dart';
 import '../blocs/parking_spaces_bloc.dart';
@@ -36,12 +35,12 @@ class _MainScreenState extends State<MainScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) {
-          String personId = context.read<AuthBloc>().state.user!.id!;
+          String personId = context.read<AuthBloc>().state.user!.id;
           return VehiclesBloc(repository: VehicleFirebaseRepository())
             ..add(LoadVehicles(personId: personId));
         }),
         BlocProvider(create: (context) {
-          String personId = context.read<AuthBloc>().state.user!.id!;
+          String personId = context.read<AuthBloc>().state.user!.id;
           return ParkingsBloc(
               repository: ParkingFirebaseRepository(),
               repositorySpace: ParkingSpaceFirebaseRepository())
