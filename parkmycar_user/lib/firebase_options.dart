@@ -17,29 +17,17 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -60,4 +48,40 @@ class DefaultFirebaseOptions {
     storageBucket: 'parkmycar-77337.firebasestorage.app',
     iosBundleId: 'com.example.parkmycarUser',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDqu9cy4InOTlMFsANv3dbXW949pxfIdtw',
+    appId: '1:605265536284:web:f0e7ccd472af14ff9d86d9',
+    messagingSenderId: '605265536284',
+    projectId: 'parkmycar-77337',
+    authDomain: 'parkmycar-77337.firebaseapp.com',
+    storageBucket: 'parkmycar-77337.firebasestorage.app',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyCn0Zy2gYWBig-uLp9VtexHpOWsplt7880',
+    appId: '1:605265536284:ios:0935bb0707cea9979d86d9',
+    messagingSenderId: '605265536284',
+    projectId: 'parkmycar-77337',
+    storageBucket: 'parkmycar-77337.firebasestorage.app',
+    iosBundleId: 'com.example.parkmycarUser',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDuNQoxRdS6vjYnifYSBd1kDUdoHApYrf0',
+    appId: '1:605265536284:android:40c806c2c16d21829d86d9',
+    messagingSenderId: '605265536284',
+    projectId: 'parkmycar-77337',
+    storageBucket: 'parkmycar-77337.firebasestorage.app',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyDqu9cy4InOTlMFsANv3dbXW949pxfIdtw',
+    appId: '1:605265536284:web:6351932adb8caba29d86d9',
+    messagingSenderId: '605265536284',
+    projectId: 'parkmycar-77337',
+    authDomain: 'parkmycar-77337.firebaseapp.com',
+    storageBucket: 'parkmycar-77337.firebasestorage.app',
+  );
+
 }

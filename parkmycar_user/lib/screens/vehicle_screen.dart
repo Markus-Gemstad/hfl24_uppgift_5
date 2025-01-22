@@ -74,7 +74,7 @@ class VehicleScreen extends StatelessWidget {
                                     String personId = context
                                         .read<AuthBloc>()
                                         .state
-                                        .user!
+                                        .person!
                                         .id;
                                     context.read<VehiclesBloc>().add(
                                         UpdateVehicle(
@@ -92,7 +92,7 @@ class VehicleScreen extends StatelessWidget {
                                     String personId = context
                                         .read<AuthBloc>()
                                         .state
-                                        .user!
+                                        .person!
                                         .id;
                                     context.read<VehiclesBloc>().add(
                                         DeleteVehicle(
@@ -125,7 +125,7 @@ class VehicleScreen extends StatelessWidget {
               debugPrint(vehicle.toString());
 
               if (vehicle != null && vehicle.isValid() && context.mounted) {
-                String personId = context.read<AuthBloc>().state.user!.id;
+                String personId = context.read<AuthBloc>().state.person!.id;
                 context
                     .read<VehiclesBloc>()
                     .add(CreateVehicle(vehicle: vehicle, personId: personId));

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,7 @@ class _AccountScreenState extends State<AccountScreen> {
   final _formKey = GlobalKey<FormState>();
   String? _name;
   String? _email;
+  String? _password;
 
   void savePerson(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
@@ -34,13 +36,25 @@ class _AccountScreenState extends State<AccountScreen> {
           // Update name of currently logged in person
           final authState = context.read<AuthBloc>().state;
           if (authState.status == AuthStateStatus.authenticated) {
-            //Person currentPerson = authState.user; // Get user from state
-            authState.user?.name = _name!; // Update name in state
-            await PersonFirebaseRepository().update(authState.user!);
+            authState.person?.name = _name!; // Update name in state
+
+            // Update name in person repo
+            await PersonFirebaseRepository().update(authState.person!);
+
+            // Update password in firebase authorization
+            if (_password != null && _password != '') {
+              await AuthRepository().changePassword(password: _password!);
+              _password = null;
+            }
           }
         } else {
-          // Save new person
-          await PersonFirebaseRepository().create(Person(_name!, _email!));
+          // Register new person in firebase authorization
+          UserCredential userCred = await AuthRepository()
+              .register(email: _email!, password: _password!);
+
+          // Save new person in database
+          await PersonFirebaseRepository()
+              .create(Person(_name!, _email!, userCred.user!.uid));
         }
 
         String successMessage =
@@ -54,7 +68,8 @@ class _AccountScreenState extends State<AccountScreen> {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
-          ..showSnackBar(const SnackBar(content: Text('Person kunde inte sparas!')));
+          ..showSnackBar(
+              const SnackBar(content: Text('Person kunde inte sparas!')));
       }
     }
   }
@@ -62,7 +77,7 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = context.watch<AuthBloc>().state;
-    Person? currentPerson = authState.user;
+    Person? currentPerson = authState.person;
     String title = (widget.isEditMode) ? 'Redigera konto' : 'Skapa konto';
 
     return Scaffold(
@@ -82,7 +97,6 @@ class _AccountScreenState extends State<AccountScreen> {
                   validator: (value) => Validators.isValidName(value)
                       ? null
                       : 'Ange ett giltigt namn.',
-                  onFieldSubmitted: (_) => savePerson(context),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   autofocus: true,
                   onSaved: (newValue) => _name = newValue,
@@ -103,6 +117,19 @@ class _AccountScreenState extends State<AccountScreen> {
                       labelText: (widget.isEditMode)
                           ? 'E-post (går inte att ändra)'
                           : 'E-post'),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Lösenord',
+                    border: UnderlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock),
+                  ),
+                  validator: (value) => Validators.isValidPassword(value, true)
+                      ? null
+                      : 'Ange ett giltigt lösenord (6-12 tecken)',
+                  onSaved: (newValue) => _password = newValue,
                 ),
                 const SizedBox(height: 20),
                 Row(

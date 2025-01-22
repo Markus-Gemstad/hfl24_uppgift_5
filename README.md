@@ -42,6 +42,18 @@ En parkeringsapp med tillhörande server-api (webservices) och admin-gui.
 - Redigera användare (endast namn, e-post är låst)
 - Byta mellan mörkt, ljust eller automatiskt (system) tema
 
+## Uppgift 5
+
+### Nyheter
+
+- Lagring har bytts ut till Google Firebase Cloud Firestore
+- Aktiva parkeringar i admin-app visas nu via en stream med realtids-uppdateringar
+- Inloggningen använder sig av Google Firebase Authentication
+
+### Funktioner för VG
+
+- Aktiva parkeringar i admin-app visas via en stream med realtids-uppdateringar
+
 ## Uppgift 4
 
 ### Nyheter

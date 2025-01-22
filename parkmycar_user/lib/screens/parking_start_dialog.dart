@@ -23,7 +23,7 @@ class _ParkingStartDialogState extends State<ParkingStartDialog> {
 
     if (context.mounted) {
       // ignore: use_build_context_synchronously
-      Person? currentPerson = context.read<AuthBloc>().state.user;
+      Person? currentPerson = context.read<AuthBloc>().state.person;
 
       // TODO Ersätt med bättre relationer mellan Vehicle och Person
       items = items
@@ -44,7 +44,7 @@ class _ParkingStartDialogState extends State<ParkingStartDialog> {
 
   @override
   Widget build(BuildContext context) {
-    Person? currentPerson = context.read<AuthBloc>().state.user;
+    Person? currentPerson = context.read<AuthBloc>().state.person;
 
     return Scaffold(
       appBar: AppBar(

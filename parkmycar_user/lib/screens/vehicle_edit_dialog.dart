@@ -42,7 +42,7 @@ class _VehicleEditDialogState extends State<VehicleEditDialog> {
       _formKey.currentState!.save();
 
       final authState = context.read<AuthBloc>().state;
-      Person? currentPerson = authState.user;
+      Person? currentPerson = authState.person;
 
       if (isEditMode) {
         _vehicle = Vehicle(_regNr!, currentPerson!.id,

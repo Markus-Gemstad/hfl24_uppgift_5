@@ -16,6 +16,7 @@ export 'models/vehicle.dart';
 export 'repositories/repository_interface.dart';
 export 'util/validators.dart';
 
+export 'repositories/auth_repository.dart';
 export 'repositories/firebase_repository.dart';
 export 'repositories/parking_firebase_repository.dart';
 export 'repositories/parking_space_firebase_repository.dart';

@@ -17,9 +17,17 @@ class LoginScreen extends StatelessWidget {
 
     final formKey = GlobalKey<FormState>();
     final usernameFocus = FocusNode();
-    // final passwordFocus = FocusNode();
+    final passwordFocus = FocusNode();
 
     String? email;
+    String? password;
+
+    saveAndLogin() {
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save();
+        context.read<AuthBloc>().add(AuthLoginRequested(email!, password!));
+      }
+    }
 
     return Scaffold(
         body: BlocListener(
@@ -59,31 +67,24 @@ class LoginScreen extends StatelessWidget {
                   validator: (value) => Validators.isValidEmail(value)
                       ? null
                       : 'Ange en giltig e-postadress',
-                  onFieldSubmitted: (_) {
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
-                      context.read<AuthBloc>().add(AuthLoginRequested(email!));
-                    }
-                  },
+                  onFieldSubmitted: (_) => passwordFocus.requestFocus(),
                   onSaved: (newValue) => email = newValue,
                 ),
-                // const SizedBox(height: 16),
-                // TextFormField(
-                //   focusNode: passwordFocus,
-                //   obscureText: true,
-                //   enabled: authService.status != AuthStatus.authenticating,
-                //   decoration: const InputDecoration(
-                //     labelText: 'Lösenord',
-                //     prefixIcon: Icon(Icons.lock),
-                //   ),
-                //   validator: (value) =>
-                //       value?.isEmpty ?? true ? 'Ange ett lösenord' : null,
-                //   onFieldSubmitted: (_) {
-                //     if (formKey.currentState!.validate()) {
-                //       context.read<AuthService>().login();
-                //     }
-                //   },
-                // ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  focusNode: passwordFocus,
+                  obscureText: true,
+                  enabled: !isLoading,
+                  decoration: const InputDecoration(
+                    labelText: 'Lösenord',
+                    prefixIcon: Icon(Icons.lock),
+                  ),
+                  validator: (value) => Validators.isValidPassword(value)
+                      ? null
+                      : 'Ange ett giltigt lösenord (6-12 tecken)',
+                  onFieldSubmitted: (_) => saveAndLogin(),
+                  onSaved: (newValue) => password = newValue,
+                ),
                 const SizedBox(height: 32),
                 SizedBox(
                   width: double.infinity,
@@ -100,14 +101,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         )
                       : FilledButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              formKey.currentState!.save();
-                              context
-                                  .read<AuthBloc>()
-                                  .add(AuthLoginRequested(email!));
-                            }
-                          },
+                          onPressed: saveAndLogin,
                           child: const Text('Logga in'),
                         ),
                 ),
@@ -150,7 +144,7 @@ class LoginScreen extends StatelessWidget {
 
 Future<void> createBaseData() async {
   Person? person = await PersonFirebaseRepository()
-      .create(Person("Test Testson", "test@testson.se"));
+      .create(Person("Test Testson", "test@testson.se", ''));
 
   final vehicleRepo = VehicleFirebaseRepository();
   await vehicleRepo.create(Vehicle("ABC123", person!.id, VehicleType.car));

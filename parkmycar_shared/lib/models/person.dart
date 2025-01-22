@@ -5,9 +5,10 @@ import 'serializer.dart';
 class Person extends Identifiable {
   String name;
   String email;
+  String authId;
 
   /// Default constructor. Exclude id if this is a new object
-  Person(this.name, this.email, [String? id]) : super(id);
+  Person(this.name, this.email, this.authId, [String? id]) : super(id);
 
   @override
   bool isValid() {
@@ -16,7 +17,7 @@ class Person extends Identifiable {
 
   @override
   String toString() {
-    return "Id: $id, Namn: $name, E-post: $email";
+    return "Id: $id, Namn: $name, E-post: $email, AuthId: $authId";
   }
 }
 
@@ -27,6 +28,7 @@ class PersonSerializer extends Serializer<Person> {
       'id': item.id,
       'email': item.email,
       'name': item.name,
+      'authId': item.authId,
     };
   }
 
@@ -35,6 +37,7 @@ class PersonSerializer extends Serializer<Person> {
     return Person(
       json['name'] as String,
       json['email'] as String,
+      json['authId'] as String,
       json['id'] as String,
     );
   }

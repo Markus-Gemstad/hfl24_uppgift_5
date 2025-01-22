@@ -12,7 +12,7 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        String personId = context.read<AuthBloc>().state.user!.id;
+        String personId = context.read<AuthBloc>().state.person!.id;
         context.read<ParkingsBloc>().add(ReloadParkings(personId: personId));
         await context
             .read<ParkingsBloc>()
@@ -35,7 +35,7 @@ class HistoryScreen extends StatelessWidget {
                           ElevatedButton(
                               onPressed: () {
                                 String personId =
-                                    context.read<AuthBloc>().state.user!.id;
+                                    context.read<AuthBloc>().state.person!.id;
                                 context
                                     .read<ParkingsBloc>()
                                     .add(LoadParkings(personId: personId));

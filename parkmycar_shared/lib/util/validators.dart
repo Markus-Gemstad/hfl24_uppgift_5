@@ -15,6 +15,16 @@ class Validators {
     return false;
   }
 
+  /// Valid value = string with minimum of 6 letter, max 12
+  static bool isValidPassword(String? value, [bool isEmptyOk = false]) {
+    if (isEmptyOk && (value == null || value.isEmpty)) {
+      return true;
+    } else if (value != null && value.length >= 6 && value.length <= 12) {
+      return true;
+    }
+    return false;
+  }
+
   /// Valid value is a valid email address
   static bool isValidEmail(String? value) {
     if (value != null &&

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import '../util/validators.dart';
 import 'identifiable.dart';
@@ -120,8 +121,8 @@ class ParkingSerializer extends Serializer<Parking> {
       'personId': item.personId,
       'vehicleId': item.vehicleId,
       'parkingSpaceId': item.parkingSpaceId,
-      'startTime': item.startTime.toIso8601String(),
-      'endTime': item.endTime.toIso8601String(),
+      'startTime': item.startTime,
+      'endTime': item.endTime,
       'pricePerHour': item.pricePerHour,
     };
   }
@@ -132,8 +133,8 @@ class ParkingSerializer extends Serializer<Parking> {
       json['personId'] as String,
       json['vehicleId'] as String,
       json['parkingSpaceId'] as String,
-      DateTime.parse(json['startTime']),
-      DateTime.parse(json['endTime']),
+      (json['startTime'] as Timestamp).toDate(),
+      (json['endTime'] as Timestamp).toDate(),
       json['pricePerHour'] as int,
       json['id'] as String,
     );

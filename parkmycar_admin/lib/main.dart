@@ -26,7 +26,9 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => AuthBloc(repository: PersonFirebaseRepository()),
+          create: (_) => AuthBloc(
+              authRepository: AuthRepository(),
+              personRepository: PersonFirebaseRepository()),
         ),
         BlocProvider(
           create: (BuildContext context) => ThemeCubit(),

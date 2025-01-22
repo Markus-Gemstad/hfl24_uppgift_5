@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "605265536284",
+    "project_id": "parkmycar-77337",
+    "storage_bucket": "parkmycar-77337.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605265536284:android:d28503a4a88b6ed29d86d9",
+        "android_client_info": {
+          "package_name": "com.parkmycar_admin.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuNQoxRdS6vjYnifYSBd1kDUdoHApYrf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605265536284:android:b7f2f8c4615f78cf9d86d9",
+        "android_client_info": {
+          "package_name": "com.parkmycar_user.ap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuNQoxRdS6vjYnifYSBd1kDUdoHApYrf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605265536284:android:40c806c2c16d21829d86d9",
+        "android_client_info": {
+          "package_name": "com.parkmycar_user.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuNQoxRdS6vjYnifYSBd1kDUdoHApYrf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

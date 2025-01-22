@@ -11,36 +11,9 @@ class StatisticsScreen extends StatefulWidget {
 }
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
-  late Future<List<Parking>> _ongoingParkings;
-  final ValueNotifier<int> _ongoingParkingCount = ValueNotifier<int>(0);
   late Future<double> _totalParkingIncome;
   late Future<List<PopularParkingSpace>> _popularParkingSpaceList;
-
-  Future<List<Parking>> getOngoingParkings() async {
-    // Get all sorted by latest first
-    var items = await ParkingFirebaseRepository().getAll('startTime');
-
-    // Filtrera på nu pågående parkeringar
-    // TODO Kunna hämta lista fördigfilrerad från databasen
-    items = items.where((element) => element.isOngoing).toList();
-
-    // Setting the _ongoingCount activates the ChangeNotifier
-    // (do this because the count is placed outside of the FutureBuilder)
-    _ongoingParkingCount.value = items.length;
-
-    for (var item in items) {
-      // TODO Ersätt med bättre relationer mellan Parking och ParkingSpace
-      try {
-        item.parkingSpace =
-            await ParkingSpaceFirebaseRepository().getById(item.parkingSpaceId);
-      } catch (e) {
-        debugPrint('Error getting ParkingSpace:${item.parkingSpaceId}');
-      }
-    }
-
-    // Added delay to demonstrate loading animation
-    return Future.delayed(Duration(milliseconds: 250), () => items);
-  }
+  late Stream<List<Parking>> _ongoingParkingsStream;
 
   Future<List<PopularParkingSpace>> getPopularParkingSpaces() async {
     var parkingSpaces = await ParkingSpaceFirebaseRepository().getAll();
@@ -80,9 +53,10 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   @override
   void initState() {
     super.initState();
-    _ongoingParkings = getOngoingParkings();
     _totalParkingIncome = getTotalParkingIncome();
     _popularParkingSpaceList = getPopularParkingSpaces();
+    _ongoingParkingsStream =
+        ParkingFirebaseRepository().getOngoingParkingsStream();
   }
 
   @override
@@ -100,34 +74,39 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   children: [
                     Text('Aktiva parkeringar',
                         style: Theme.of(context).textTheme.titleLarge),
-                    SizedBox(width: 10),
-                    OngoingCountWidget(
-                        counterValueNotifier: _ongoingParkingCount),
-                    IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _ongoingParkings = getOngoingParkings();
-                          });
-                        },
-                        icon: Icon(Icons.refresh))
+                    // IconButton(
+                    //     onPressed: () {
+                    //       setState(() {
+                    //         _ongoingParkings = getOngoingParkings();
+                    //       });
+                    //     },
+                    //     icon: Icon(Icons.refresh))
                   ],
                 ),
                 SizedBox(height: 20),
-                FutureBuilder<List<Parking>>(
-                    future: _ongoingParkings,
+                StreamBuilder(
+                    stream: _ongoingParkingsStream,
                     builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Expanded(
+                          child: SelectableText('Error: ${snapshot.error}'),
+                        );
+                      }
+
                       if (snapshot.hasData) {
                         if (snapshot.data!.isEmpty) {
                           return Expanded(
                             child: Text('Finns inga pågående parkeringar.'),
                           );
                         }
+                        debugPrint('Has data: ${snapshot.data}');
 
                         return Expanded(
                           child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
-                              var item = snapshot.data![index];
+                              Parking item = snapshot.data![index];
+                              // TODO: Add parkingSpace to Parking
                               return ListTile(
                                   contentPadding: EdgeInsets.all(0),
                                   title: Text(item.parkingSpace!.streetAddress),
@@ -139,12 +118,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           ),
                         );
                       }
-                      if (snapshot.hasError) {
-                        return Expanded(
-                          child: Text('Error: ${snapshot.error}'),
-                        );
-                      }
-
                       return Center(child: CircularProgressIndicator());
                     }),
               ],
@@ -214,26 +187,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class OngoingCountWidget extends StatelessWidget {
-  const OngoingCountWidget({super.key, required this.counterValueNotifier});
-
-  final ValueNotifier<int> counterValueNotifier;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: counterValueNotifier,
-      builder: (BuildContext context, Widget? child) {
-        if (counterValueNotifier.value == 0) {
-          return Text('(-)', style: Theme.of(context).textTheme.titleLarge);
-        }
-        return Text('(${counterValueNotifier.value})',
-            style: Theme.of(context).textTheme.titleLarge);
-      },
     );
   }
 }

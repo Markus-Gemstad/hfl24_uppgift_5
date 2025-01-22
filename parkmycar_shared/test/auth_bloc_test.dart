@@ -45,9 +45,10 @@ void main() {
         setUp: () {
           when(() => mockRepo.getAll()).thenAnswer((_) async => [person]);
         },
-        build: () => AuthBloc(repository: mockRepo),
+        build: () => AuthBloc(
+            authRepository: AuthRepository(), personRepository: mockRepo),
         //seed: () => AuthLoaded(parkings: []),
-        act: (bloc) => bloc.add(AuthLoginRequested(person.email)),
+        act: (bloc) => bloc.add(AuthLoginRequested(person.email, 'password')),
         expect: () => [
           const AuthState.authenticating(),
           AuthState.authenticated(person),
@@ -64,9 +65,10 @@ void main() {
           when(() => mockRepo.getAll())
               .thenThrow(Exception('Failed loading users'));
         },
-        build: () => AuthBloc(repository: mockRepo),
+        build: () => AuthBloc(
+            authRepository: AuthRepository(), personRepository: mockRepo),
         //seed: () => AuthLoaded(parkings: []),
-        act: (bloc) => bloc.add(AuthLoginRequested(person.email)),
+        act: (bloc) => bloc.add(AuthLoginRequested(person.email, 'password')),
         expect: () => [
           const AuthState.authenticating(),
           const AuthState.unauthenticated(),
@@ -79,7 +81,8 @@ void main() {
 
       blocTest<AuthBloc, AuthState>(
         'logout success',
-        build: () => AuthBloc(repository: mockRepo),
+        build: () => AuthBloc(
+            authRepository: AuthRepository(), personRepository: mockRepo),
         act: (bloc) => bloc.add(AuthLogoutRequested()),
         expect: () => [
           const AuthState.initial(),

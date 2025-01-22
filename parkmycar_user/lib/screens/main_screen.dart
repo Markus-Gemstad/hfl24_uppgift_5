@@ -35,12 +35,12 @@ class _MainScreenState extends State<MainScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) {
-          String personId = context.read<AuthBloc>().state.user!.id;
+          String personId = context.read<AuthBloc>().state.person!.id;
           return VehiclesBloc(repository: VehicleFirebaseRepository())
             ..add(LoadVehicles(personId: personId));
         }),
         BlocProvider(create: (context) {
-          String personId = context.read<AuthBloc>().state.user!.id;
+          String personId = context.read<AuthBloc>().state.person!.id;
           return ParkingsBloc(
               repository: ParkingFirebaseRepository(),
               repositorySpace: ParkingSpaceFirebaseRepository())
