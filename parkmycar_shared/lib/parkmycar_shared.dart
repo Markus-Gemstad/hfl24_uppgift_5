@@ -3,6 +3,7 @@ library parkmycar_shared2;
 export 'screens/login_screen.dart';
 export 'screens/logout_screen.dart';
 export 'screens/account_screen.dart';
+export 'screens/finalize_registration_screen.dart';
 export 'blocs/auth_bloc.dart';
 export 'cubits/theme_cubit.dart';
 

@@ -7,7 +7,7 @@ class PersonFirebaseRepository extends FirebaseRepository<Person> {
 
   Future<Person?> getByAuthId(String authId) async {
     final snapshot = await fireStore
-        .collection("person")
+        .collection(collectionId)
         .where("authId", isEqualTo: authId)
         .get();
 

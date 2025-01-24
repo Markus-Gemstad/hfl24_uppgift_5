@@ -3,8 +3,8 @@ part of 'auth_bloc.dart';
 enum AuthStateStatus {
   initial,
   authenticating,
-  // authenticatedNoPerson,
-  // authenticadPersonPending,
+  authenticatedNoPerson,
+  authenticatedNoPersonPending,
   authenticated,
   unauthenticated
 }
@@ -12,10 +12,14 @@ enum AuthStateStatus {
 class AuthState extends Equatable {
   final AuthStateStatus status;
   final Person? person;
+  final String? authId;
+  final String? email;
 
   const AuthState._({
     this.status = AuthStateStatus.initial,
     this.person,
+    this.authId,
+    this.email,
   });
 
   const AuthState.initial() : this._();
@@ -23,11 +27,19 @@ class AuthState extends Equatable {
   const AuthState.authenticating()
       : this._(status: AuthStateStatus.authenticating, person: null);
 
-  // const AuthState.authenticatedNoPerson(String authId, String email)
-  //     : this._(status: AuthStateStatus.authenticatedNoPerson, person: null);
+  const AuthState.authenticatedNoPerson(String authId, String email)
+      : this._(
+            status: AuthStateStatus.authenticatedNoPerson,
+            person: null,
+            authId: authId,
+            email: email);
 
-  // const AuthState.authenticatedPersonPending(String authId, String email)
-  //     : this._(status: AuthStateStatus.authenticadPersonPending, person: null);
+  const AuthState.authenticatedNoPersonPending(String authId, String email)
+      : this._(
+            status: AuthStateStatus.authenticatedNoPersonPending,
+            person: null,
+            authId: authId,
+            email: email);
 
   const AuthState.authenticated(Person person)
       : this._(status: AuthStateStatus.authenticated, person: person);

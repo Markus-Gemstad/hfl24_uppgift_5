@@ -1,24 +1,20 @@
 # ParkMyCar
 
-En parkeringsapp med tillhörande server-api (webservices) och admin-gui.
+En parkeringsapp som lagrar sitt data i Firebase Cloud Storage med tillhörande admin-gui.
 
 ## Installation
 
-1. Ladda ner hela repot (https://github.com/Markus-Gemstad/hfl24_uppgift_4)
+1. Ladda ner hela repot (https://github.com/Markus-Gemstad/hfl24_uppgift_5)
 2. Öppna mappen i Visual Studio Code
-3. Öppna en terminal i mappen parkmycar_server
-4. Starta servern: 'dart run parkmycar_server:server'
-5. parkmycar_user (användarappen):
-5.1. Starta iOS-simulator eller Android-simulator (bara testat på Mac, appen går även att köra som MacOS-app)
-5.2. Kör parkmycar_user i iOS-simulatorn (flutter run)
-6. parkmycar_admin (adminappen):
-6.1. Kör parkmycar_admin som macOS-app (flutter run)
+5. parkmycar_user (användarappen): Kör i webb (Chrome)
+6. parkmycar_admin (adminappen): Kör i webb (Chrome)
 
 ## Funktioner
 ### parkmycar_user
 
 - Registrering av nya användare (namn och e-post)
 - In-/utloggning (med e-post endast)
+- Inloggning med Google-konto
 - Lägga till fordon
 - Ta bort fordon
 - Lista egna fordon
@@ -26,7 +22,7 @@ En parkeringsapp med tillhörande server-api (webservices) och admin-gui.
 - Starta parkering
 - Avsluta parkering
 - Visa parkeringshistorik
-- Redigera användare (endast namn, e-post är låst)
+- Redigera användare (endast namn och lösenord, e-post är låst)
 - Byta mellan mörkt, ljust eller automatiskt (system) tema
 
 ### parkmycar_admin
@@ -36,7 +32,6 @@ En parkeringsapp med tillhörande server-api (webservices) och admin-gui.
 - Ta bort parkeringsplatser
 - Visa alla parkeringsplatser
 - Visa aktiva parkeringar
-- Antal aktiva parkeringar
 - Summerad inkomst från parkeringar
 - Populäraste parkeringsplatserna (top 10)
 - Redigera användare (endast namn, e-post är låst)
@@ -49,10 +44,18 @@ En parkeringsapp med tillhörande server-api (webservices) och admin-gui.
 - Lagring har bytts ut till Google Firebase Cloud Firestore
 - Aktiva parkeringar i admin-app visas nu via en stream med realtids-uppdateringar
 - Inloggningen använder sig av Google Firebase Authentication
+- Alternativ inloggning via Google-konto, användaren får då kompletera med namn via ett andra steg efter inloggning
 
 ### Funktioner för VG
 
 - Aktiva parkeringar i admin-app visas via en stream med realtids-uppdateringar
+- Inloggning via Google-konto
+
+### Avgränsningar och kända begränsningar
+
+- Sökfunktion för parkeringar inte optimal
+- Apparna fungerar numera bara i web (pga att inställningar inte gjorts för Firebase Authentication för andra platformar)
+- Google-inloggning använder popup istället för redirect då redirect inte gick igång
 
 ## Uppgift 4
 

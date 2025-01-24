@@ -83,5 +83,4 @@ class DefaultFirebaseOptions {
     authDomain: 'parkmycar-77337.firebaseapp.com',
     storageBucket: 'parkmycar-77337.firebasestorage.app',
   );
-
 }

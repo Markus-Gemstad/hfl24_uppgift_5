@@ -28,7 +28,8 @@ Future<void> main() async {
         BlocProvider(
           create: (_) => AuthBloc(
               authRepository: AuthRepository(),
-              personRepository: PersonFirebaseRepository()),
+              personRepository: PersonFirebaseRepository())
+            ..add(AuthUserSubscriptionRequested()),
         ),
         BlocProvider(
           create: (BuildContext context) => ThemeCubit(),
@@ -73,7 +74,12 @@ class AuthViewSwitcher extends StatelessWidget {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 250),
       child: switch (authState.status) {
+        AuthStateStatus.initial => SizedBox.shrink(),
         AuthStateStatus.authenticated => const MainScreen(), // When logged in
+        AuthStateStatus.authenticatedNoPersonPending ||
+        AuthStateStatus.authenticatedNoPerson =>
+          FinalizeRegistrationWidget(
+              authId: authState.authId!, email: authState.email!),
         _ => const LoginScreen(title: 'ParkMyCar ADMIN'), // For all other cases
       },
     );

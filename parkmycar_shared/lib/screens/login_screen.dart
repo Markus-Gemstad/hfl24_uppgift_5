@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
     }
 
     return Scaffold(
-        body: BlocListener(
+        body: BlocListener<AuthBloc, AuthState>(
       bloc: authBloc,
       listener: (context, AuthState state) {
         if (state.status == AuthStateStatus.unauthenticated) {
@@ -53,6 +53,7 @@ class LoginScreen extends StatelessWidget {
                   title,
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
+                //Text(authStatus.toString()),
                 const SizedBox(height: 32),
                 TextFormField(
                   focusNode: usernameFocus,
@@ -106,8 +107,16 @@ class LoginScreen extends StatelessWidget {
                         ),
                 ),
                 const SizedBox(height: 32),
-                const Text('Eller saknar du konto?'),
+                IconButton(
+                  onPressed: () => AuthRepository().signInWithGoogle(),
+                  padding: const EdgeInsets.all(0.0),
+                  icon: Image.asset(
+                    'assets/signinwith_google_light.png',
+                    height: 36,
+                  ),
+                ),
                 const SizedBox(height: 16),
+                const Text('Eller saknar du konto?'),
                 TextButton(
                     onPressed: () {
                       formKey.currentState!.reset();
