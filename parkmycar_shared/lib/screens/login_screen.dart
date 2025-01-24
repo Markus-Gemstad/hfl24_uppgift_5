@@ -36,8 +36,8 @@ class LoginScreen extends StatelessWidget {
         if (state.status == AuthStateStatus.unauthenticated) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(
-                const SnackBar(content: Text('Inloggningen misslyckades!')));
+            ..showSnackBar(SnackBar(
+                content: Text(state.errorMessage ?? 'Fel vid inloggning')));
         }
       },
       child: Center(

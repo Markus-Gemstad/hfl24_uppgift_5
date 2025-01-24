@@ -15,28 +15,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       : super(const AuthState.initial()) {
     on<AuthUserSubscriptionRequested>(
         (event, emit) async => await _onUserSubscriptionRequested(event, emit));
-    on<AuthRegister>((event, emit) async => await _onRegister(event, emit));
+    // on<AuthRegister>((event, emit) async => await _onRegister(event, emit));
     on<AuthFinalizeRegistration>(
         (event, emit) async => await _onFinalizeRegistration(event, emit));
     on<AuthLoginRequested>((event, emit) async => await _onLogin(event, emit));
     on<AuthLogoutRequested>(
         (event, emit) async => await _onLogout(event, emit));
   }
-
-  // Future<void> _onUserSubscriptionRequested(event, emit) async {
-  //   authRepository.userStream.listen((authUser) async {
-  //     if (authUser == null) {
-  //       emit(const AuthState.unauthenticated());
-  //     } else {
-  //       Person? person = await personRepository.getByAuthId(authUser.uid);
-  //       if (person == null) {
-  //         emit(AuthState.authenticatedNoPerson(authUser.uid, authUser.email!));
-  //       } else {
-  //         emit(AuthState.authenticated(person));
-  //       }
-  //     }
-  //   });
-  // }
 
   Future<void> _onUserSubscriptionRequested(event, emit) async {
     await emit.onEach(authRepository.userStream, onData: (authUser) async {
@@ -53,10 +38,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
-  Future<void> _onRegister(AuthRegister event, emit) async {
-    emit(const AuthState.authenticating());
-    await authRepository.register(email: event.email, password: event.password);
-  }
+  // Future<void> _onRegister(AuthRegister event, emit) async {
+  //   emit(const AuthState.authenticating());
+  //   try {
+  //     await authRepository.register(
+  //         email: event.email, password: event.password);
+  //   } on SignUpWithEmailAndPasswordFailure catch (e) {
+  //     emit(AuthState.failure(e.message));
+  //   } catch (_) {
+  //     emit(const AuthState.failure('Unknown error'));
+  //   }
+  // }
 
   Future<void> _onFinalizeRegistration(
       AuthFinalizeRegistration event, emit) async {
@@ -70,16 +62,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onLogin(AuthLoginRequested event, emit) async {
     emit(const AuthState.authenticating());
-
     try {
       // Login to firebase authorization
       await authRepository.login(email: event.email, password: event.password);
-    } catch (e) {
-      await authRepository.logout();
-      // No reason to emit state here because this triggers a change on the
-      // authStateChanges stream, the stream handler will emit the appropriate state
-      // emit(const AuthState.unauthenticated());
+    } on LogInWithEmailAndPasswordFailure catch (e) {
+      emit(AuthState.failure(e.message));
+    } catch (_) {
+      emit(const AuthState.failure('Unknown error'));
     }
+
+    // No reason to emit state here because this triggers a change on the
+    // authStateChanges stream, the stream handler will emit the appropriate state
+    // emit(const AuthState.unauthenticated());
   }
 
   Future<void> _onLogout(AuthLogoutRequested event, emit) async {

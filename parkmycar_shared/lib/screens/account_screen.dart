@@ -25,9 +25,9 @@ class _AccountScreenState extends State<AccountScreen> {
   String? _email;
   String? _password;
 
-  void savePerson(BuildContext context) async {
+  Future<bool> savePerson(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      if (!mounted) return;
+      if (!mounted) return false;
 
       _formKey.currentState!.save();
 
@@ -63,6 +63,14 @@ class _AccountScreenState extends State<AccountScreen> {
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(SnackBar(content: Text(successMessage)));
+
+        return true; // Everything is okay
+      } on SignUpWithEmailAndPasswordFailure catch (e) {
+        debugPrint(e.toString());
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text(e.message)));
       } catch (e) {
         debugPrint(e.toString());
         // ignore: use_build_context_synchronously
@@ -72,6 +80,7 @@ class _AccountScreenState extends State<AccountScreen> {
               const SnackBar(content: Text('Person kunde inte sparas!')));
       }
     }
+    return false; // Something went wrong
   }
 
   @override
@@ -79,6 +88,14 @@ class _AccountScreenState extends State<AccountScreen> {
     final authState = context.watch<AuthBloc>().state;
     Person? currentPerson = authState.person;
     String title = (widget.isEditMode) ? 'Redigera konto' : 'Skapa konto';
+
+    bool isGoogleUser = false;
+    for (var e in FirebaseAuth.instance.currentUser!.providerData) {
+      if (e.providerId == 'google.com') {
+        isGoogleUser = true;
+        break;
+      }
+    }
 
     return Scaffold(
       body: Align(
@@ -119,17 +136,21 @@ class _AccountScreenState extends State<AccountScreen> {
                           : 'E-post'),
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Lösenord',
-                    border: UnderlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
+                Visibility(
+                  visible: !isGoogleUser,
+                  child: TextFormField(
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Lösenord',
+                      border: UnderlineInputBorder(),
+                      prefixIcon: Icon(Icons.lock),
+                    ),
+                    validator: (value) =>
+                        Validators.isValidPassword(value, true)
+                            ? null
+                            : 'Ange ett giltigt lösenord (6-12 tecken)',
+                    onSaved: (newValue) => _password = newValue,
                   ),
-                  validator: (value) => Validators.isValidPassword(value, true)
-                      ? null
-                      : 'Ange ett giltigt lösenord (6-12 tecken)',
-                  onSaved: (newValue) => _password = newValue,
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -150,8 +171,9 @@ class _AccountScreenState extends State<AccountScreen> {
                     FilledButton(
                       child: const Text('Spara'),
                       onPressed: () async {
-                        savePerson(context);
-                        if (widget.doPop) {
+                        bool ok = await savePerson(context);
+                        if (ok && widget.doPop) {
+                          // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
                         }
                       },
