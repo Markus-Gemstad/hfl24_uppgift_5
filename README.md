@@ -55,8 +55,7 @@ En parkeringsapp som lagrar sitt data i Firebase Cloud Storage med tillhörande 
 
 - Sökfunktion för parkeringar inte optimal
 - Apparna fungerar numera bara i web (pga att inställningar inte gjorts för Firebase Authentication för andra platformar)
-- Google-inloggningen använder popup istället för redirect då redirect inte gick igång
-- Google-inloggningen går inte via Bloc
+- Google-inloggningen startar inte via event i AuthBloc samt saknar felhantering
 
 ## Uppgift 4
 
