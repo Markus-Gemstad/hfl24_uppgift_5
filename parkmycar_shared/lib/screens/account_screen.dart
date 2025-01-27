@@ -90,10 +90,12 @@ class _AccountScreenState extends State<AccountScreen> {
     String title = (widget.isEditMode) ? 'Redigera konto' : 'Skapa konto';
 
     bool isGoogleUser = false;
-    for (var e in FirebaseAuth.instance.currentUser!.providerData) {
-      if (e.providerId == 'google.com') {
-        isGoogleUser = true;
-        break;
+    if (FirebaseAuth.instance.currentUser != null) {
+      for (var e in FirebaseAuth.instance.currentUser!.providerData) {
+        if (e.providerId == 'google.com') {
+          isGoogleUser = true;
+          break;
+        }
       }
     }
 
