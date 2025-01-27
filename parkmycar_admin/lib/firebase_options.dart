@@ -46,6 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '605265536284',
     projectId: 'parkmycar-77337',
     storageBucket: 'parkmycar-77337.firebasestorage.app',
+    iosClientId: '605265536284-hl3oum5f9nmthtjo4nstaeaurpnhgqe0.apps.googleusercontent.com',
     iosBundleId: 'com.example.parkmycarAdmin',
   );
 
@@ -64,12 +65,13 @@ class DefaultFirebaseOptions {
     messagingSenderId: '605265536284',
     projectId: 'parkmycar-77337',
     storageBucket: 'parkmycar-77337.firebasestorage.app',
+    iosClientId: '605265536284-hl3oum5f9nmthtjo4nstaeaurpnhgqe0.apps.googleusercontent.com',
     iosBundleId: 'com.example.parkmycarAdmin',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDuNQoxRdS6vjYnifYSBd1kDUdoHApYrf0',
-    appId: '1:605265536284:android:d28503a4a88b6ed29d86d9',
+    appId: '1:605265536284:android:d293e4b6a08528019d86d9',
     messagingSenderId: '605265536284',
     projectId: 'parkmycar-77337',
     storageBucket: 'parkmycar-77337.firebasestorage.app',

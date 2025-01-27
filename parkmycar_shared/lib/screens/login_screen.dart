@@ -131,7 +131,6 @@ class LoginScreen extends StatelessWidget {
                   visible: kDebugMode,
                   child: Column(
                     children: [
-                      const SizedBox(height: 20),
                       TextButton(
                           onPressed: () async => createBaseData(),
                           child: const Text('DEBUG: Fyll på med basdata')),
