@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parkmycar_shared/parkmycar_shared.dart';
 
@@ -13,8 +12,7 @@ class ParkingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: Ta bort denna raden
-    timeDilation = 2.0; // Make the animations go slower
+    // timeDilation = 2.0; // Make the animations go slower
     final ActiveParkingState activeParkingState =
         context.watch<ActiveParkingBloc>().state;
 

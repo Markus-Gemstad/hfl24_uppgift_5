@@ -106,7 +106,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               Parking item = snapshot.data![index];
-                              // TODO: Add parkingSpace to Parking
                               return ListTile(
                                   contentPadding: EdgeInsets.all(0),
                                   title: Text(item.parkingSpace!.streetAddress),

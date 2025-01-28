@@ -14,8 +14,6 @@ class ActiveParkingBloc extends Bloc<ActiveParkingEvent, ActiveParkingState> {
 
   Future<void> _startParking(ActiveParkingStart event, emit) async {
     emit(ActiveParkingState.starting(event.parking));
-    // TODO Ta bort delay
-    // await Future.delayed(Duration(seconds: 2));
     try {
       // TODO Ersätt med bättre relationer mellan Parking och ParkingSpace
       // Do a little work-around for ParkingSpace since the returning
@@ -38,8 +36,6 @@ class ActiveParkingBloc extends Bloc<ActiveParkingEvent, ActiveParkingState> {
 
   Future<void> _endParking(ActiveParkingEnd event, emit) async {
     emit(ActiveParkingState.ending());
-    // TODO Ta bort delay
-    // await Future.delayed(Duration(seconds: 2));
     try {
       event.parking.endTime = DateTime.now();
       await ParkingFirebaseRepository().update(event.parking);
